@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-payslips
+    ports:
+      - "6607:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: payroll_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  backend:
+    build: ./Backend
+    container_name: backend-payslips
+    ports:
+      - "3047:3047"
+    depends_on:
+      - postgres
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: admin123
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: payroll_db
+      PORT: 3047
+    restart: unless-stopped
+
+  frontend:
+    build: ./Frontend
+    container_name: frontend-payslips
+    ports:
+      - "8151:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  hr:
+    build: ./HR
+    container_name: hr-payslips
+    ports:
+      - "8152:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  payslip:
+    build: ./Payslip
+    container_name: payslip-viewer
+    ports:
+      - "8153:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
