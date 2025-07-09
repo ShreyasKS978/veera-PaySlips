@@ -1145,7 +1145,7 @@ async function generatePDF() {
         const monthValue = monthInput.value;
 
         try {
-            const response = await fetch(`http://13.203.223.242:3052/api/payslips/${empId}/${monthValue}`);
+            const response = await fetch(`http://13.232.219.53:3052/api/payslips/${empId}/${monthValue}`);
             if (!response.ok) {
                 throw new Error('Payslip not found');
             }
