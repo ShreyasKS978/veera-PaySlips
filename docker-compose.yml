@@ -19,7 +19,7 @@ services:
     build: ./Backend
     container_name: backend-payslips
     ports:
-      - "3047:3047"
+      - "3052:3052"
     depends_on:
       - postgres
     environment:
@@ -28,7 +28,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: payroll_db
-      PORT: 3047
+      PORT: 3052
     restart: unless-stopped
 
   frontend:
